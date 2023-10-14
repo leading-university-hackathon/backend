@@ -4,7 +4,6 @@ import models,const,database
 from passlib.context import CryptContext
 pwdContext = CryptContext(schemes=["bcrypt"], deprecated ="auto")
 import logging,httpx
-from sqlalchemy.orm import Session
 from fastapi import Depends
 
 logging.basicConfig(level=logging.INFO)
@@ -156,7 +155,7 @@ async def send_message(medicine: str, time: str, contact_no: str):
         else:
             logging.info("Error: Message not sent")
 
-            
+
 async def send_message(medicine: str, time: str, contact_no: str):
     message = f"You have to take {medicine} at {time}. Kindly take it"
     url = MESSAGE_API.format(

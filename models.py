@@ -134,6 +134,7 @@ class MedicineReminder(Base):
 class Diagnosis(Base):
     __tablename__ = 'diagnosis'
     id = Column(Integer, primary_key=True,index=True)
+    name=Column(String, nullable=True)
     description = Column(String, nullable=True)
     price = Column(Integer, nullable= True)
     hospital_id = Column(Integer, ForeignKey('hospitals.id'))

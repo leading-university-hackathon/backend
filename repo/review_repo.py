@@ -1,4 +1,3 @@
-from datetime import date
 import models,database
 from fastapi import Depends
 from sqlalchemy.orm import Session
