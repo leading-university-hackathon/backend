@@ -150,5 +150,4 @@ class CompletedPrescription(BaseModel):
 
 class ReviewIn(BaseModel):
     subjectId:int
-    subjectName:str
     orderId:int
