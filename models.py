@@ -113,6 +113,7 @@ class MedicineReminder(Base):
     id = Column(Integer, primary_key=True,index=True)
     description = Column(String, nullable=False)
     time = Column(String, nullable=False)
+    days:Column(String, nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'))
     user = relationship("User")
   

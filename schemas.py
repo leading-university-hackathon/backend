@@ -176,3 +176,4 @@ class ReviewPending(BaseModel):
 class MedicineReminderIn(BaseModel):
     description:str
     time:str
+    days:str

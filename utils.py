@@ -61,17 +61,6 @@ def convert_string_to_local_time(time_string):
     local_time = datetime.strptime(time_string, "%H:%M").time()
     return local_time
 
-def convert_int_to_day(days):
-    day_mapping = {
-        0: "Sunday",
-        1: "Monday",
-        2: "Tuesday",
-        3: "Wednesday",
-        4: "Thursday",
-        5: "Friday",
-        6: "Saturday"
-    }
-
 
 def set_new_serial_time(time:float):
         int_time = int(time)
