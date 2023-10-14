@@ -77,6 +77,22 @@ def doctor_signup(doctorsignup:schemas.DoctorSignUp, db:Session = Depends(databa
     raise HTTPException(status_code=201, detail="Doctor Created")
     
 
+@router.post("hospital/signup")
+def hospital_signup(hospitalsignup:schemas.HospitalSignUp, db:Session = Depends(database.get_db)):
 
+    user = models.User(**hospitalsignup.user.model_dump())
+    user.password = utils.hash(user.password)
+    user.role ="HOSPITAL"
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+
+    hospital = models.Hospital(user=user, bio=hospitalsignup.bio, hospitalName=hospitalsignup.hospitalName, place=hospitalsignup.place)
+
+    db.add(hospital)
+    db.commit()
+    db.refresh(hospital)
+
+    raise HTTPException(status_code=201, detail="Hospital Created")
 
 

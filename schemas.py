@@ -102,6 +102,14 @@ class DoctorSignUp(BaseModel):
     class Config():
         orm_mode = True
 
+class HospitalSignUp(BaseModel):
+    user:UserSignup
+    bio:str
+    hospitalName:str
+    place:str
+    class Config():
+        orm_mode = True
+
 class DoctorOut(BaseModel):
     user:UserOut
     bio:str
