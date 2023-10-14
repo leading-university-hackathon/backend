@@ -1,4 +1,4 @@
-from datetime import date,datetime
+from datetime import date,datetime, timedelta
 from random import randrange
 from typing import List
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
@@ -6,6 +6,8 @@ from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 import models, schemas, utils, oauth2, database,const
 from fastapi import Depends, FastAPI, status,Response, HTTPException, APIRouter
 from sqlalchemy.orm import Session
+
+from repo import doctor_serialrepo
 
 router = APIRouter(
     tags=["doctor_serial"],
@@ -76,9 +78,11 @@ def showUpcomingDoctorSerial(db:Session=Depends(database.get_db), current_user: 
     if current_user.role!="USER" and current_user.role!="DOCTOR":
         raise HTTPException(status_code=404, detail="error")
 
-    serials = db.query(models.DoctorSerial).filter(models.DoctorSerial.user_id == current_user.id).filter(models.DoctorSerial.date >= datetime.now().date()).all()
-
-    if not serials:
-        raise HTTPException(status_code=404, detail="empty")
-
-    return serials
+    time = utils.convert_time_to_double(datetime.combine(datetime.today(), datetime.now().time()) - timedelta(minutes=30))
+    if current_user.role=="USER":
+        serials = doctor_serialrepo.findUpcomingSerialforUser(current_user.id, datetime.now().date(), time,db)
+        return serials
+    
+    elif current_user.role=="DOCTOR":
+        serials = doctor_serialrepo.findUpcomingSerialforDoctor(current_user.id, datetime.now().date(),time,db)
+        return serials
