@@ -10,7 +10,7 @@ router = APIRouter(
 )
 
 @router.post("/signin", response_model=schemas.Token)
-def login(userCredentials:schemas.UserSignin, db:Session = Depends(database.get_db)):
+def signin(userCredentials:schemas.UserSignin, db:Session = Depends(database.get_db)):
      
     user = db.query(models.User).filter(models.User.email == userCredentials.email ).first()
     if not user:
@@ -36,7 +36,7 @@ def login(userCredentials:schemas.UserSignin, db:Session = Depends(database.get_
 @router.post("/signup",
              status_code= 201,
              response_model= schemas.UserOut)
-def login(user:schemas.UserSignup, db:Session = Depends(database.get_db)):
+def signup(user:schemas.UserSignup, db:Session = Depends(database.get_db)):
     user.password = utils.hash(user.password)
     user = models.User(**user.model_dump())
     user.role ="USER"

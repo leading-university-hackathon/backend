@@ -14,7 +14,7 @@ router = APIRouter(
 
 
 @router.post("/add" ,status_code=201)
-def addDoctor_Serial(addDoctorSerial:schemas.addDoctorSerial, db:Session=Depends(database.get_db), current_user: models.User = Depends(oauth2.getCurrentUser)):
+def addDoctorSerial(addDoctorSerial:schemas.addDoctorSerial, db:Session=Depends(database.get_db), current_user: models.User = Depends(oauth2.getCurrentUser)):
 
     if current_user.role!="USER":
         raise HTTPException(status_code=404, detail="error")
@@ -53,7 +53,7 @@ def addDoctor_Serial(addDoctorSerial:schemas.addDoctorSerial, db:Session=Depends
 
 
 @router.put("/update/pres/{id}",status_code=202)
-def update_pres(id:int, pres:schemas.Prescription, db:Session=Depends(database.get_db), current_user: models.User = Depends(oauth2.getCurrentUser)):
+def update_prescription(id:int, pres:schemas.Prescription, db:Session=Depends(database.get_db), current_user: models.User = Depends(oauth2.getCurrentUser)):
 
     if current_user.role!="DOCTOR":
         raise HTTPException(status_code=404, detail="error")
@@ -70,3 +70,15 @@ def update_pres(id:int, pres:schemas.Prescription, db:Session=Depends(database.g
 
     return {"details":"success"}
 
+@router.get("/update/upcoming/",response_model=List[schemas.DoctorSerialOut])
+def showUpcomingDoctorSerial(db:Session=Depends(database.get_db), current_user: models.User = Depends(oauth2.getCurrentUser)):
+
+    if current_user.role!="USER" and current_user.role!="DOCTOR":
+        raise HTTPException(status_code=404, detail="error")
+
+    serials = db.query(models.DoctorSerial).filter(models.DoctorSerial.user_id == current_user.id).filter(models.DoctorSerial.date >= datetime.now().date()).all()
+
+    if not serials:
+        raise HTTPException(status_code=404, detail="empty")
+
+    return serials

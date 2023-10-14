@@ -103,6 +103,17 @@ class addDoctorSerial(BaseModel):
     time: float
     doctor_id: int
 
+class DoctorSerialOut(BaseModel):
+    id:int
+    price:int
+    type:str
+    user_id:int
+    doctor_id:int
+    time:float
+    appointmentDate:date
+    class Config():
+        orm_mode = True
+
 
 class Prescription(BaseModel):
     prescription :str
