@@ -102,3 +102,7 @@ class addDoctorSerial(BaseModel):
     appointmentDate: date
     time: float
     doctor_id: int
+
+
+class Prescription(BaseModel):
+    prescription :str

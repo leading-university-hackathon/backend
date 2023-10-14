@@ -50,3 +50,22 @@ def addDoctor_Serial(addDoctorSerial:schemas.addDoctorSerial, db:Session=Depends
     db.commit()
 
     return {"details":"success"}
+
+
+@router.put("/update/pres/{id}",status_code=202)
+def update_pres(id:int, pres:schemas.Prescription, db:Session=Depends(database.get_db), current_user: models.User = Depends(oauth2.getCurrentUser)):
+
+    if current_user.role!="USER":
+        raise HTTPException(status_code=404, detail="error")
+
+    serial = db.query(models.DoctorSerial).filter(models.DoctorSerial.id == id).first()
+
+    if serial.user_id != current_user.id:
+        raise HTTPException(status_code=404, detail="error")
+
+    serial.prescription = pres.prescription
+
+    db.add(serial)
+    db.commit()
+
+    return {"details":"success"}
