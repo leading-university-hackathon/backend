@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 import models
 from database import engine, SessionLocal
-from router import auth
+from router import auth, doctor
 
 app = FastAPI()
 
@@ -17,7 +17,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+# models.Base.metadata.drop_all(bind=engine)
+
 models.Base.metadata.create_all(bind=engine)
 
 
 app.include_router(auth.router)
+app.include_router(doctor.router)

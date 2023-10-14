@@ -24,9 +24,9 @@ def login(userCredentials:schemas.UserSignin, db:Session = Depends(database.get_
 
     accessToken = oauth2.createAccessToken( data = {"id":user.id, 
                                                     "email":user.email,
-                                                    "name":user.name,
-                                                    "url":user.url})
+                                                     "role":user.role})
     tokenData = schemas.Token(access_token=accessToken,token_type="bearer", email=user.email, name=user.name, url=user.url)
+    
     return tokenData
 
 
@@ -36,7 +36,8 @@ def login(userCredentials:schemas.UserSignin, db:Session = Depends(database.get_
              response_model= schemas.UserOut)
 def login(user:schemas.UserSignup, db:Session = Depends(database.get_db)):
     user.password = utils.hash(user.password)
-    user = models.User(**user.dict())
+    user = models.User(**user.model_dump())
+    user.role ="USER"
     db.add(user)
     db.commit()
     db.refresh(user)
@@ -59,13 +60,13 @@ def doctor_signup(doctorsignup:schemas.DoctorSignUp, db:Session = Depends(databa
     db.refresh(doctor)
 
     for i in doctorsignup.availableOnlineTimes:
-        availableOnlineTime = models.availableOnlineTime(doctor=doctor, date=i.date, start_time=i.start_time, end_time=i.end_time, available_time=i.available_time)
+        availableOnlineTime = models.availableOnlineTime(doctor_id=doctor.id, date=utils.current_date(i.day), day= i.day,start_time=i.start_time, end_time=i.end_time, available_time=i.start_time)
         db.add(availableOnlineTime)
         db.commit()
         db.refresh(availableOnlineTime)
 
     for i in doctorsignup.availableOfflineTimes:
-        availableOfflineTime = models.availableOfflineTime(doctor=doctor, date=i.date, start_time=i.start_time, end_time=i.end_time, available_time=i.available_time)
+        availableOfflineTime = models.availableOfflineTime(doctor_id=doctor.id, date=utils.current_date(i.day), day=i.day, start_time=i.start_time, end_time=i.end_time, available_time=i.start_time)
         db.add(availableOfflineTime)
         db.commit()
         db.refresh(availableOfflineTime)
