@@ -54,7 +54,7 @@ def getPendingReview(db:Session=Depends(database.get_db), current_user: models.U
     doctorserials = db.query(models.DoctorSerial).filter(models.DoctorSerial.user_id == current_user.id).filter(models.DoctorSerial.reviewchecked == 0).all()
     reviewsout = []
     for i in doctorserials:
-        reviewout=schemas.ReviewPending(orderId=i.id,subjectId=i.doctor_id,subjectName=i.doctor.user.name)
+        reviewout=schemas.ReviewPending(orderId=i.id,subjectId=i.doctor_id,subjectName=i.doctor.name)
         reviewsout.append(reviewout)
     
     return reviewsout
