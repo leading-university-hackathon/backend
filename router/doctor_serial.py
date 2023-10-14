@@ -111,7 +111,7 @@ def getAllPrescriptions(db:Session=Depends(database.get_db), current_user: model
     prescriptions =[]
 
     for i in serials:
-        prescription = schemas.CompletedPrescription(prescription=i.prescription, doctor_id=i.doctor_id, doctor_name=i.doctor.name)
+        prescription = schemas.CompletedPrescription(prescription=i.prescription, doctorId=i.doctor_id, doctorName=i.doctor.name)
         prescriptions.append(prescription)
 
     return prescriptions
