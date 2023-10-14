@@ -30,13 +30,11 @@ class payload(BaseModel):
     email:EmailStr
     name:str
     url:str
+    phone:str
+    role:str
 
     class Config:
         orm_mode = True
-
-
-
-
 
 
 
@@ -45,6 +43,7 @@ class UserSignup(BaseModel):
     password:str
     name:str
     url:str
+    phone:str
 
 class UserOut(BaseModel):
     name:str
@@ -53,5 +52,37 @@ class UserOut(BaseModel):
 class UserSignin(BaseModel):
     email:EmailStr
     password:str
+class availableOnlineTime(BaseModel):
+    date:date
+    day:str
+    start_time:float
+    end_time:float
+    available_time:float
+    class Config():
+        orm_mode = True
+
+class availableOfflineTime(BaseModel):
+    date:date
+    day:str
+    start_time:float
+    end_time:float
+    available_time:float
+    class Config():
+        orm_mode = True
+
+class DoctorSignUp(BaseModel):
+    user:UserSignup
+    bio:str
+    expertise:str
+    current_hospital:str
+    place:str
+    online_fee:int
+    offline_fee:int
+    degrees:str
+    availableOnlineTimes:List[availableOnlineTime]
+    availableOfflineTimes:List[availableOfflineTime]
+
+    class Config():
+        orm_mode = True
 
 

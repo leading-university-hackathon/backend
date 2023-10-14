@@ -42,7 +42,36 @@ def login(user:schemas.UserSignup, db:Session = Depends(database.get_db)):
     db.refresh(user)
     return user
 
+@router.post("/doctor/signup")
+def doctor_signup(doctorsignup:schemas.DoctorSignUp, db:Session = Depends(database.get_db)):
 
+    user = models.User(**doctorsignup.user.model_dump())
+    user.password = utils.hash(user.password)
+    user.role ="DOCTOR"
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+
+    doctor = models.Doctor(user=user, bio=doctorsignup.bio, expertise=doctorsignup.expertise, current_hospital=doctorsignup.current_hospital, place=doctorsignup.place, online_fee=doctorsignup.online_fee, offline_fee=doctorsignup.offline_fee, degrees=doctorsignup.degrees)
+
+    db.add(doctor)
+    db.commit()
+    db.refresh(doctor)
+
+    for i in doctorsignup.availableOnlineTimes:
+        availableOnlineTime = models.availableOnlineTime(doctor=doctor, date=i.date, start_time=i.start_time, end_time=i.end_time, available_time=i.available_time)
+        db.add(availableOnlineTime)
+        db.commit()
+        db.refresh(availableOnlineTime)
+
+    for i in doctorsignup.availableOfflineTimes:
+        availableOfflineTime = models.availableOfflineTime(doctor=doctor, date=i.date, start_time=i.start_time, end_time=i.end_time, available_time=i.available_time)
+        db.add(availableOfflineTime)
+        db.commit()
+        db.refresh(availableOfflineTime)
+
+    raise HTTPException(status_code=201, detail="Doctor Created")
+    
 
 
 
