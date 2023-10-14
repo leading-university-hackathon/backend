@@ -106,7 +106,7 @@ class DoctorSerial(Base):
 
     time = Column(Double, nullable=False)
 
-    reviewchecked = Column(Integer, nullable=False)
+    reviewchecked = Column(Integer, nullable=False,default=None)
 
     checked = Column(Integer, nullable=False)
 
