@@ -93,7 +93,7 @@ class Review(Base):
 
 
 class DoctorSerial(Base):
-    __tablename__ = "DoctorSerial"
+    __tablename__ = "doctorserials"
     id =Column(Integer, primary_key=True,index=True)
 
     type = Column(String, nullable=False)
@@ -110,7 +110,7 @@ class DoctorSerial(Base):
 
     checked = Column(Integer, nullable=False)
 
-    prescription = Column(String, nullable=False)
+    prescription = Column(String, nullable=True,default=None)
 
     user = relationship("User")
     user_id = Column(Integer, ForeignKey("users.id"))
