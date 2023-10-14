@@ -87,4 +87,31 @@ def showUpcomingDoctorSerial(db:Session=Depends(database.get_db), current_user: 
         serials = doctor_serialrepo.findUpcomingSerialforDoctor(current_user.id, datetime.now().date(),time,db)
         return serials
     
-@router.put()
+@router.put("/check/{id}",status_code=202)
+def checkDoctorSerial(id:int, db:Session=Depends(database.get_db), current_user: models.User = Depends(oauth2.getCurrentUser)):
+
+    if current_user.role!="DOCTOR":
+        raise HTTPException(status_code=404, detail="error")
+    
+    serial = db.query(models.DoctorSerial).filter(models.DoctorSerial.id == id).first()
+    serial.checked = 1
+    db.add(serial)
+    db.commit()
+    
+    return {"details":"success"}
+
+@router.get("pres/all",status_code=status.HTTP_200_OK)
+def getAllPrescriptions(db:Session=Depends(database.get_db), current_user: models.User = Depends(oauth2.getCurrentUser)):
+
+    if current_user.role!="USER":
+        raise HTTPException(status_code=404, detail="error")
+    
+    serials = doctor_serialrepo.findPrescriptionsForUser(current_user.id,db)
+
+    prescriptions =[]
+
+    for i in serials:
+        prescription = schemas.CompletedPrescription(prescription=i.prescription, doctor_id=i.doctor_id, doctor_name=i.doctor.name)
+        prescriptions.append(prescription)
+
+    return prescriptions

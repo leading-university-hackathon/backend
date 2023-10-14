@@ -36,3 +36,8 @@ def findUpcomingSerialforDoctor(doctorId, date:date, time:float,db:Session=Depen
         .all()
     )
     return upcoming_serials
+
+def findPrescriptionsForUser(userId, db:Session=Depends(database.get_db)):
+    doctorSerial = db.query(models.DoctorSerial).filter(models.DoctorSerial.user_id == userId).filter(models.DoctorSerial.prescription != "default").all()
+    
+    return doctorSerial

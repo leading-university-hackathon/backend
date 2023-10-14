@@ -117,3 +117,11 @@ class DoctorSerialOut(BaseModel):
 
 class Prescription(BaseModel):
     prescription :str
+
+class CompletedPrescription(BaseModel):
+    prescription:str
+    doctorId:int
+    doctorName:str
+    
+    class Config():
+        orm_mode = True
