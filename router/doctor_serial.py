@@ -86,3 +86,5 @@ def showUpcomingDoctorSerial(db:Session=Depends(database.get_db), current_user: 
     elif current_user.role=="DOCTOR":
         serials = doctor_serialrepo.findUpcomingSerialforDoctor(current_user.id, datetime.now().date(),time,db)
         return serials
+    
+@router.put()

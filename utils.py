@@ -89,7 +89,8 @@ def setSerialTime(doctor: models.Doctor):
         available_time = i.available_time
 
         if i.date==current_date:
-            current_time = convert_time_to_double(datetime.now().time)
+
+            current_time = convert_time_to_double(datetime.now().time())
 
             if available_time<current_time:
                 available_time = current_time
@@ -105,7 +106,7 @@ def setSerialTime(doctor: models.Doctor):
         available_time = i.available_time
 
         if i.date==current_date:
-            current_time = convert_time_to_double(datetime.now().time)
+            current_time = convert_time_to_double(datetime.now().time())
 
             if available_time<current_time:
                 available_time = current_time
