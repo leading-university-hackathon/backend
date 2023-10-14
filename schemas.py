@@ -200,7 +200,7 @@ class MedicineReminderOut(BaseModel):
     class Config():
         orm_mode = True
 
-class addDiagnostic(BaseModel):
+class addDiagnosis(BaseModel):
     name:str
     price:int
     description:str
