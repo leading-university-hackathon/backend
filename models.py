@@ -61,36 +61,6 @@ class Doctor(Base):
     availableOfflineTimes = relationship("availableOfflineTime",back_populates="doctor")
     availableOnlineTimes = relationship("availableOnlineTime",back_populates="doctor")
     
-# #Hospital class
-# class Hospital(Base):
-#     __tablename__ = 'hospitals'
-
-#     id = Column(Integer, primary_key=True,index=True)
-#     bio= Column(String, nullable=True)
-#     hospitalName = Column(String, nullable=False)
-#     place = Column(String, nullable=False)
-#     user = relationship("User")
-#     user_id = Column(Integer, ForeignKey('users.id'))
-
-    
-#Review class
-class Review(Base):
-    __tablename__ = 'reviews'
-    id = Column(Integer, primary_key=True,index=True)
-
-    starCount = Column(Integer, nullable=False)
-
-    reveiw = Column(String, nullable=False)
-
-    reviewer_id = Column(Integer, ForeignKey("users.id"))   
-    reviewer =relationship("User", foreign_keys=[reviewer_id])
-    
-
-    subject_id = Column(Integer, ForeignKey("users.id"))
-    subject =relationship("User", foreign_keys=[subject_id])
-    
-
-
 class DoctorSerial(Base):
     __tablename__ = "doctorserials"
     id =Column(Integer, primary_key=True,index=True)
@@ -117,4 +87,21 @@ class DoctorSerial(Base):
 
     doctor_id = Column(Integer, ForeignKey("users.id"))
     doctor = relationship("User",foreign_keys=[doctor_id])
+    
+
+#Review class
+class Review(Base):
+    __tablename__ = 'reviews'
+    id = Column(Integer, primary_key=True,index=True)
+
+    starCount = Column(Integer, nullable=False)
+
+    review = Column(String, nullable=False)
+
+    reviewer_id = Column(Integer, ForeignKey("users.id"))   
+    reviewer =relationship("User", foreign_keys=[reviewer_id])
+    
+
+    subject_id = Column(Integer, ForeignKey("users.id"))
+    subject =relationship("User", foreign_keys=[subject_id])
     

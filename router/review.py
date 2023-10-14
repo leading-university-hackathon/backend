@@ -14,6 +14,15 @@ router = APIRouter(
 
 
 router.post("/add",status_code=201)
+def addReview(review:str,star:int, reviewin:schemas.ReviewIn, db:Session=Depends(database.get_db), current_user: models.User = Depends(oauth2.getCurrentUser)):
 
-def addReview()
+    if current_user.role!="USER":
+        raise HTTPException(status_code=404, detail="error")
+
+    review = models.Review(review=review,starCount=star,reviewer_id=current_user.id,subject_id=reviewin.subject_id)
+
+    db.add(review)
+    db.commit()
+
+    return {"details":"success"}
 

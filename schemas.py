@@ -149,6 +149,6 @@ class CompletedPrescription(BaseModel):
         orm_mode = True
 
 class ReviewIn(BaseModel):
-    
-    reviewer_id:int
-    subject_id:int
+    subjectId:int
+    subjectName:str
+    orderId:int
