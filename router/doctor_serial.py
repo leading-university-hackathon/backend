@@ -101,6 +101,7 @@ def checkDoctorSerial(id:int, db:Session=Depends(database.get_db), current_user:
     
     serial = db.query(models.DoctorSerial).filter(models.DoctorSerial.id == id).first()
     serial.checked = 1
+    serial.reviewchecked = 0
     db.add(serial)
     db.commit()
     

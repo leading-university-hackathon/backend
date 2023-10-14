@@ -13,7 +13,7 @@ router = APIRouter(
 )
 
 
-router.post("/add",status_code=201)
+@router.post("/add",status_code=201)
 def addReview(review:str,star:int, reviewin:schemas.ReviewIn, db:Session=Depends(database.get_db), current_user: models.User = Depends(oauth2.getCurrentUser)):
 
     if current_user.role!="USER":
@@ -21,6 +21,11 @@ def addReview(review:str,star:int, reviewin:schemas.ReviewIn, db:Session=Depends
 
     review = models.Review(review=review,starCount=star,reviewer_id=current_user.id,subject_id=reviewin.subject_id)
 
+    doctor_serial = db.query(models.DoctorSerial).filter(models.DoctorSerial.id == reviewin.orderId).first()
+
+    doctor_serial.reviewchecked = 1
+    db.add(doctor_serial)
+    db.commit()
     db.add(review)
     db.commit()
 
