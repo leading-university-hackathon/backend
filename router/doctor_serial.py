@@ -60,7 +60,7 @@ def update_prescription(id:int, pres:schemas.Prescription, db:Session=Depends(da
 
     serial = db.query(models.DoctorSerial).filter(models.DoctorSerial.id == id).first()
 
-    if serial.user_id != current_user.id:
+    if serial.doctor_id != current_user.id:
         raise HTTPException(status_code=404, detail="error")
 
     serial.prescription = pres.prescription
