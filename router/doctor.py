@@ -39,6 +39,8 @@ def get_doctors(db: Session = Depends(database.get_db), current_user: models.Use
 
         utils.setSerialTime(doctor)
         doctor.rating = review_repo.findAvgRating(doctor.id,db)
+        if not doctor.rating:
+         doctor.rating = 0.0
 
         db.add(doctor)
         db.commit()
@@ -70,8 +72,11 @@ def get_doctor(id:int, db:Session = Depends(database.get_db),current_user: model
             doctor.availableOnlineTimes[i].available_time =doctor.availableOnlineTimes[i].start_time
     
     utils.setSerialTime(doctor)
-
+    
     doctor.rating = review_repo.findAvgRating(doctor.id,db)
+
+    if not doctor.rating:
+        doctor.rating = 0.0
     
     db.commit()
 

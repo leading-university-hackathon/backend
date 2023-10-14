@@ -12,10 +12,3 @@ def findAvgRating(doctorId,db:Session=Depends(database.get_db)):
 
     return average_star_count
 
-def findTotalRatingCount(doctorId,db:Session=Depends(database.get_db)):
-
-    total_review_count = db.query(func.count(models.Review).label("total_review_count")) \
-    .filter(models.Review.subject_id == doctorId) \
-    .scalar()
-
-    return total_review_count
