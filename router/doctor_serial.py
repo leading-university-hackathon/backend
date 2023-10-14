@@ -72,7 +72,7 @@ def update_prescription(id:int, pres:schemas.Prescription, db:Session=Depends(da
 
     return {"details":"success"}
 
-@router.get("/update/upcoming",response_model=List[schemas.DoctorSerialOut])
+@router.get("/upcoming",response_model=List[schemas.DoctorSerialOut])
 def showUpcomingDoctorSerial(db:Session=Depends(database.get_db), current_user: models.User = Depends(oauth2.getCurrentUser)):
 
     if current_user.role!="USER" and current_user.role!="DOCTOR":
