@@ -172,3 +172,7 @@ class ReviewPending(BaseModel):
 
     class Config():
         orm_mode = True
+
+class MedicineReminderIn(BaseModel):
+    description:str
+    time:str

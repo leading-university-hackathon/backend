@@ -60,7 +60,8 @@ class Doctor(Base):
     user_id = Column(Integer, ForeignKey('users.id'))
     availableOfflineTimes = relationship("availableOfflineTime",back_populates="doctor")
     availableOnlineTimes = relationship("availableOnlineTime",back_populates="doctor")
-    
+
+#DoctorSerial class    
 class DoctorSerial(Base):
     __tablename__ = "doctorserials"
     id =Column(Integer, primary_key=True,index=True)
@@ -105,3 +106,13 @@ class Review(Base):
     subject_id = Column(Integer, ForeignKey("users.id"))
     subject =relationship("User", foreign_keys=[subject_id])
     
+
+#MedicineReminder class
+class MedicineReminder(Base):
+    __tablename__ = 'medicine_reminders'
+    id = Column(Integer, primary_key=True,index=True)
+    description = Column(String, nullable=False)
+    time = Column(String, nullable=False)
+    user_id = Column(Integer, ForeignKey('users.id'))
+    user = relationship("User")
+  
