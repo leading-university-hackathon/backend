@@ -6,6 +6,7 @@ from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 import models, schemas, utils, oauth2, database
 from fastapi import Depends, FastAPI, status,Response, HTTPException, APIRouter
 from sqlalchemy.orm import Session
+from repo import review_repo
 
 router = APIRouter(
     tags=["doctor"],
@@ -42,7 +43,9 @@ def get_doctors(db: Session = Depends(database.get_db), current_user: models.Use
         db.commit()
         db.refresh(doctor)
 
-        updated_doctors.append(doctor)
+        doctorout = schemas.DoctorOut(**doctor.model_dump(),rating=review_repo.findAvgRating(doctor.id,db))
+
+        updated_doctors.append(doctorout)
 
     return updated_doctors
 
@@ -68,8 +71,12 @@ def get_doctor(id:int, db:Session = Depends(database.get_db),current_user: model
             doctor.availableOnlineTimes[i].available_time =doctor.availableOnlineTimes[i].start_time
     
     utils.setSerialTime(doctor)
+
+
     
     db.commit()
 
-    return doctor
+    doctorout = schemas.DoctorOut(**doctor.model_dump(),rating=review_repo.findAvgRating(doctor.id,db))
+
+    return doctorout
 

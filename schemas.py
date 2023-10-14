@@ -112,6 +112,8 @@ class DoctorOut(BaseModel):
     degrees:str
     availableOnlineTimes:List[availableOnlineTimeOut]
     availableOfflineTimes:List[availableOfflineTimeOut]
+    rating:float
+    balance:int
 
     class Config():
         orm_mode = True
