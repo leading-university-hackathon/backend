@@ -112,8 +112,10 @@ class DoctorSerial(Base):
 
     prescription = Column(String, nullable=True,default=None)
 
-    user = relationship("User")
     user_id = Column(Integer, ForeignKey("users.id"))
+    user = relationship("User",foreign_keys=[user_id])
+   
 
-    doctor = relationship("Doctor")
-    doctor_id = Column(Integer, ForeignKey("doctors.id"))
+    doctor_id = Column(Integer, ForeignKey("users.id"))
+    doctor = relationship("User",foreign_keys=[doctor_id])
+    
