@@ -26,6 +26,8 @@ def addDoctor_Serial(addDoctorSerial:schemas.addDoctorSerial, db:Session=Depends
       
     doctor_serial.checked = 0
 
+    doctor_serial.reviewchecked =-1
+
     doctor.balance+=addDoctorSerial.price-const.perUserCost
 
     if(addDoctorSerial.type=="online"):
