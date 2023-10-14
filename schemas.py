@@ -56,6 +56,16 @@ class availableOnlineTime(BaseModel):
     class Config():
         orm_mode = True
 
+class availableOnlineTimeOut(BaseModel):
+    id:int
+    date:date
+    day:str
+    start_time:float
+    end_time:float
+    available_time:float
+    class Config():
+        orm_mode = True
+
 class availableOfflineTime(BaseModel):
     date:date
     day:str
@@ -64,6 +74,17 @@ class availableOfflineTime(BaseModel):
     available_time:float
     class Config():
         orm_mode = True
+
+class availableOfflineTimeOut(BaseModel):
+    id:int
+    date:date
+    day:str
+    start_time:float
+    end_time:float
+    available_time:float
+    class Config():
+        orm_mode = True
+
 
 class DoctorSignUp(BaseModel):
     user:UserSignup
@@ -89,8 +110,8 @@ class DoctorOut(BaseModel):
     online_fee:int
     offline_fee:int
     degrees:str
-    availableOnlineTimes:List[availableOnlineTime]
-    availableOfflineTimes:List[availableOfflineTime]
+    availableOnlineTimes:List[availableOnlineTimeOut]
+    availableOfflineTimes:List[availableOfflineTimeOut]
 
     class Config():
         orm_mode = True
@@ -122,6 +143,6 @@ class CompletedPrescription(BaseModel):
     prescription:str
     doctorId:int
     doctorName:str
-    
+
     class Config():
         orm_mode = True
