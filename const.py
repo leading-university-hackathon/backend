@@ -1,4 +1,4 @@
 
 perUserCost = 10
 
-perConsultTime=15
+perConsultTime=10
