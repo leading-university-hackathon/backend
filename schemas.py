@@ -5,9 +5,12 @@ from pydantic import BaseModel, EmailStr
 
 
 class Token(BaseModel):
-    access_token:str
+    id :int
+    accessToken:str
     token_type: str
     email:EmailStr
+    role:str
+    phone:str
     name:str
     url:str
 

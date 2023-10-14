@@ -24,10 +24,10 @@ def login(userCredentials:schemas.UserSignin, db:Session = Depends(database.get_
 
     accessToken = oauth2.createAccessToken(data = {"id":user.id, 
                                                     "email":user.email,
-                                                     "role":user.role,
-                                                     "name":user.name,
-                                                     "phone":user.phone})
-    tokenData = schemas.Token(accessToken=accessToken,token_type="Bearer", email=user.email, name=user.name, url=user.url)
+                                                    "role":user.role,
+                                                    "name":user.name,
+                                                    "phone":user.phone})
+    tokenData = schemas.Token(id=user.id ,accessToken=accessToken,token_type="Bearer", email=user.email, name=user.name, url=user.url,phone = user.phone,role=user.role)
 
     return tokenData
 
