@@ -57,6 +57,7 @@ def doctor_signup(doctorsignup:schemas.DoctorSignUp, db:Session = Depends(databa
 
     doctor = models.Doctor(user=user, bio=doctorsignup.bio, expertise=doctorsignup.expertise, current_hospital=doctorsignup.current_hospital, place=doctorsignup.place, online_fee=doctorsignup.online_fee, offline_fee=doctorsignup.offline_fee, degrees=doctorsignup.degrees)
     doctor.balance=0
+    doctor.rating =0.0
     db.add(doctor)
     db.commit()
     db.refresh(doctor)

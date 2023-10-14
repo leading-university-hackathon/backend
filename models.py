@@ -50,6 +50,7 @@ class Doctor(Base):
     id = Column(Integer, primary_key=True,index=True)
     bio= Column(String, nullable=True)
     balance = Column(Integer, nullable=True)
+    rating = Column(Double,nullable=True,default=0.0)
     expertise= Column(String, nullable=True)
     current_hospital= Column(String, nullable=True)
     place= Column(String, nullable=True)

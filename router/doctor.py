@@ -38,14 +38,13 @@ def get_doctors(db: Session = Depends(database.get_db), current_user: models.Use
                 online_time.available_time = online_time.start_time
 
         utils.setSerialTime(doctor)
+        doctor.rating = review_repo.findAvgRating(doctor.id,db)
 
         db.add(doctor)
         db.commit()
         db.refresh(doctor)
 
-        doctorout = schemas.DoctorOut(**doctor.model_dump(),rating=review_repo.findAvgRating(doctor.id,db))
-
-        updated_doctors.append(doctorout)
+        updated_doctors.append(doctor)
 
     return updated_doctors
 
@@ -72,11 +71,10 @@ def get_doctor(id:int, db:Session = Depends(database.get_db),current_user: model
     
     utils.setSerialTime(doctor)
 
-
+    doctor.rating = review_repo.findAvgRating(doctor.id,db)
     
     db.commit()
 
-    doctorout = schemas.DoctorOut(**doctor.model_dump(),rating=review_repo.findAvgRating(doctor.id,db))
 
-    return doctorout
+    return doctor
 
