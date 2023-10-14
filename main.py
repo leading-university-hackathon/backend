@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 import models,utils
 from database import engine, SessionLocal
-from router import auth, doctor, doctor_serial, review
+from router import auth, doctor, doctor_serial, review,medicine_reminder
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
@@ -43,3 +43,4 @@ app.include_router(auth.router)
 app.include_router(doctor.router)
 app.include_router(doctor_serial.router)
 app.include_router(review.router)
+app.include_router(medicine_reminder.router)
