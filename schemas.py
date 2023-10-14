@@ -47,6 +47,7 @@ class UserOut(BaseModel):
 class UserSignin(BaseModel):
     email:EmailStr
     password:str
+
 class availableOnlineTime(BaseModel):
     date:date
     day:str
@@ -198,3 +199,8 @@ class MedicineReminderOut(BaseModel):
 
     class Config():
         orm_mode = True
+
+class addDiagnostic(BaseModel):
+    name:str
+    price:int
+    description:str

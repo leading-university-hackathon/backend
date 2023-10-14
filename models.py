@@ -130,3 +130,5 @@ class MedicineReminder(Base):
     user_id = Column(Integer, ForeignKey('users.id'))
     user = relationship("User")
   
+#Diagnosis class
+clas

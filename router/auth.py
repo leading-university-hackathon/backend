@@ -77,7 +77,7 @@ def doctor_signup(doctorsignup:schemas.DoctorSignUp, db:Session = Depends(databa
     raise HTTPException(status_code=201, detail="Doctor Created")
     
 
-@router.post("hospital/signup")
+@router.post("/hospital/signup")
 def hospital_signup(hospitalsignup:schemas.HospitalSignUp, db:Session = Depends(database.get_db)):
 
     user = models.User(**hospitalsignup.user.model_dump())
