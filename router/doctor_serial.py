@@ -22,21 +22,21 @@ def addDoctor_Serial(addDoctorSerial:schemas.addDoctorSerial, db:Session=Depends
 
     doctor = db.query(models.Doctor).join(models.User).filter(models.User.id == addDoctorSerial.doctor_id).first()
 
-    doctor_serial = models.DoctorSerial(type = addDoctor_Serial.type,user_id=current_user.id, doctor_id=doctor.user.id, date=datetime.now().date(), time=addDoctorSerial.time, appointmentDate=addDoctorSerial.appointmentDate)
+    doctor_serial = models.DoctorSerial(type = addDoctorSerial.type,user_id=current_user.id, doctor_id=doctor.user.id, date=datetime.now().date(), time=addDoctorSerial.time, appointmentDate=addDoctorSerial.appointmentDate)
       
     doctor_serial.checked = 0
 
-    doctor.balance+=addDoctor_Serial.price-const.perUserCost
+    doctor.balance+=addDoctorSerial.price-const.perUserCost
 
-    if(addDoctor_Serial.type=="online"):
+    if(addDoctorSerial.type=="online"):
         for i in doctor.availableOnlineTimes:
-            if i.date == addDoctor_Serial.appointmentDate:
+            if i.date == addDoctorSerial.appointmentDate:
                 i.available_time = utils.set_new_serial_time(i.available_time)
                 break
             
-    if(addDoctor_Serial.type=="offline"):
+    if(addDoctorSerial.type=="offline"):
         for i in doctor.availableOfflineTimes:
-            if i.date == addDoctor_Serial.appointmentDate:
+            if i.date == addDoctorSerial.appointmentDate:
                 i.available_time = utils.set_new_serial_time(i.available_time)
                 break
 
