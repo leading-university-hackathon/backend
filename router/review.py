@@ -31,3 +31,17 @@ def addReview(review:str,star:int, reviewin:schemas.ReviewIn, db:Session=Depends
 
     return {"details":"success"}
 
+@router.get("/{id}")
+def getReview(id:int, db:Session=Depends(database.get_db), current_user: models.User = Depends(oauth2.getCurrentUser)):
+
+    if current_user.role!="USER" and current_user.role!="DOCTOR":
+        raise HTTPException(status_code=404, detail="error")
+
+    reviews = db.query(models.Review).filter(models.Review.subject_id == id).all()
+    reviewsout = []
+    for i  in reviews:
+        reviewout=schemas.ReviewOut(id=i.id,review=i.review,starCount=i.starCount,reviewerId=i.reviewer_id,subjectId=i.subject_id, reviewerName=i.reviewer.name)
+        reviewsout.append(reviewout)
+    
+    return reviewsout
+

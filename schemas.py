@@ -151,3 +151,15 @@ class CompletedPrescription(BaseModel):
 class ReviewIn(BaseModel):
     subjectId:int
     orderId:int
+
+class ReviewOut(BaseModel):
+    id:int
+    subjectId:int
+    reviewerId:int
+    reviewerName:str
+    review:str
+    starCount:int
+
+
+    class Config():
+        orm_mode = True
