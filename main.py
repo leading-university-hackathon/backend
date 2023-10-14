@@ -1,15 +1,16 @@
 
-from fastapi import Depends, FastAPI, status,Response, HTTPException
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 
 import models,utils
-from database import engine, SessionLocal
-from router import auth, doctor, doctor_serial, review,medicine_reminder
+from database import engine
+from router import auth, doctor, doctor_serial, review,medicine_reminder,hospital
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 import atexit,logging
+
 logging.basicConfig(level=logging.INFO)
 
 app = FastAPI()
@@ -44,3 +45,4 @@ app.include_router(doctor.router)
 app.include_router(doctor_serial.router)
 app.include_router(review.router)
 app.include_router(medicine_reminder.router)
+app.include_router(hospital.router)

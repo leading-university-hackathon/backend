@@ -204,3 +204,10 @@ class addDiagnostic(BaseModel):
     name:str
     price:int
     description:str
+
+class DiagnosisOut(BaseModel):
+    name:str
+    description:str
+    price:str
+    hospitalName:str
+    rating:int
