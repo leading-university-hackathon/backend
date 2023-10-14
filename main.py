@@ -7,14 +7,14 @@ import models,utils
 from database import engine, SessionLocal
 from router import auth, doctor, doctor_serial, review,medicine_reminder
 
-from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 import atexit,logging
 logging.basicConfig(level=logging.INFO)
 
 app = FastAPI()
 
-scheduler = BackgroundScheduler()
+scheduler = AsyncIOScheduler()
 scheduler.start()
 atexit.register(lambda: scheduler.shutdown())
 

@@ -156,26 +156,44 @@ async def send_message(medicine: str, time: str, contact_no: str):
         else:
             logging.info("Error: Message not sent")
 
-def sendSingleMedicineReminder(medicineReminder:models.MedicineReminder):
-    time = convert_string_to_local_time(medicineReminder.time)
+            
+async def send_message(medicine: str, time: str, contact_no: str):
+    message = f"You have to take {medicine} at {time}. Kindly take it"
+    url = MESSAGE_API.format(
+        user="8809617613117",  
+        password="huCqtTC4s44wPSkNKI0b",  
+        number=contact_no,
+        message=message
+    )
+
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url)
+
+        if 200 <= response.status_code < 300:
+            logging.info("Message sent successfully")
+        else:
+            logging.info("Error: Message not sent")
+
+async def sendSingleMedicineReminder(medicineReminder:models.MedicineReminder):
+    time = convert_string_to_local_time(medicineReminder.time).strftime("%H:%M")
+  
     days = convert_int_to_day(medicineReminder.days)
-    current_time = datetime.now().time()
+    current_time = datetime.now().strftime("%H:%M")
+   
 
     for day in days:
         current_day = datetime.now().strftime("%A")
         if day.upper()==current_day.upper() and time == current_time:
             try:
-                send_message(medicineReminder.description, medicineReminder.time, medicineReminder.user.phone)
+                await send_message(medicineReminder.description, medicineReminder.time, medicineReminder.user.phone)
             except:
 
                 logging.info("Error sending message")
 
-
-
-def sendMedincineReminders():
+async def sendMedincineReminders():
     db = database.SessionLocal()
     medicineReminders = db.query(models.MedicineReminder).all()
     for medicineReminder in medicineReminders:
-        sendSingleMedicineReminder(medicineReminder)
+        await sendSingleMedicineReminder(medicineReminder)
 
     
