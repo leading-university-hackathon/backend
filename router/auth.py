@@ -22,11 +22,13 @@ def login(userCredentials:schemas.UserSignin, db:Session = Depends(database.get_
     
     
 
-    accessToken = oauth2.createAccessToken( data = {"id":user.id, 
+    accessToken = oauth2.createAccessToken(data = {"id":user.id, 
                                                     "email":user.email,
-                                                     "role":user.role})
-    tokenData = schemas.Token(access_token=accessToken,token_type="bearer", email=user.email, name=user.name, url=user.url)
-    
+                                                     "role":user.role,
+                                                     "name":user.name,
+                                                     "phone":user.phone})
+    tokenData = schemas.Token(accessToken=accessToken,token_type="Bearer", email=user.email, name=user.name, url=user.url)
+
     return tokenData
 
 
@@ -54,7 +56,7 @@ def doctor_signup(doctorsignup:schemas.DoctorSignUp, db:Session = Depends(databa
     db.refresh(user)
 
     doctor = models.Doctor(user=user, bio=doctorsignup.bio, expertise=doctorsignup.expertise, current_hospital=doctorsignup.current_hospital, place=doctorsignup.place, online_fee=doctorsignup.online_fee, offline_fee=doctorsignup.offline_fee, degrees=doctorsignup.degrees)
-
+    doctor.balance=0
     db.add(doctor)
     db.commit()
     db.refresh(doctor)

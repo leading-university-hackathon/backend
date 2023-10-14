@@ -1,5 +1,6 @@
 from datetime import date, timedelta,datetime
 from enum import Enum
+import models,const
 from passlib.context import CryptContext
 pwdContext = CryptContext(schemes=["bcrypt"], deprecated ="auto")
 
@@ -65,3 +66,51 @@ def convert_int_to_day(days):
         5: "Friday",
         6: "Saturday"
     }
+
+
+def set_new_serial_time(time:float):
+        int_time = int(time)
+        frac_time = time - int_time
+        frac_time += const.perConsultTime / 100.0
+
+        if frac_time >= 0.6:
+            int_time += 1
+            frac_time -= 0.6
+
+        return int_time + frac_time
+
+def setSerialTime(doctor: models.Doctor):
+    
+    current_date = datetime.now().date()
+    
+    for i in doctor.availableOfflineTimes:
+        start_time = i.start_time
+        end_time = i.end_time
+        available_time = i.available_time
+
+        if i.date==current_date:
+            current_time = convert_time_to_double(datetime.now().time)
+
+            if available_time<current_time:
+                available_time = current_time
+
+            if (start_time<end_time and available_time>end_time) or (start_time>end_time and available_time>end_time and available_time<start_time):
+                i.available_time = -1.0
+            else:
+                i.available_time = available_time
+
+    for i in doctor.availableOnlineTimes:
+        start_time = i.start_time
+        end_time = i.end_time
+        available_time = i.available_time
+
+        if i.date==current_date:
+            current_time = convert_time_to_double(datetime.now().time)
+
+            if available_time<current_time:
+                available_time = current_time
+
+            if (start_time<end_time and available_time>end_time) or (start_time>end_time and available_time>end_time and available_time<start_time):
+                i.available_time = -1.0
+            else:
+                i.available_time = available_time

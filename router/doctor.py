@@ -36,6 +36,8 @@ def get_doctors(db: Session = Depends(database.get_db), current_user: models.Use
                 online_time.date = utils.next_date(online_time.day)
                 online_time.available_time = online_time.start_time
 
+        utils.setSerialTime(doctor)
+
         db.add(doctor)
         db.commit()
         db.refresh(doctor)
@@ -64,6 +66,8 @@ def get_doctor(id:int, db:Session = Depends(database.get_db),current_user: model
         if doctor.availableOnlineTimes[i].date <current_date:
             doctor.availableOnlineTimes[i].date=utils.next_date(doctor.availableOnlineTimes[i].day)
             doctor.availableOnlineTimes[i].available_time =doctor.availableOnlineTimes[i].start_time
+    
+    utils.setSerialTime(doctor)
     
     db.commit()
 

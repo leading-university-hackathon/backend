@@ -49,6 +49,7 @@ class Doctor(Base):
 
     id = Column(Integer, primary_key=True,index=True)
     bio= Column(String, nullable=True)
+    balance = Column(Integer, nullable=True)
     expertise= Column(String, nullable=True)
     current_hospital= Column(String, nullable=True)
     place= Column(String, nullable=True)
@@ -73,4 +74,46 @@ class Hospital(Base):
     user_id = Column(Integer, ForeignKey('users.id'))
 
     
+#Review class
+class Review(Base):
+    __tablename__ = 'reviews'
+    id = Column(Integer, primary_key=True,index=True)
+
+    starCount = Column(Integer, nullable=False)
+
+    reveiw = Column(String, nullable=False)
+
+    reviewer_id = Column(Integer, ForeignKey("users.id"))   
+    reviewer =relationship("User", foreign_keys=[reviewer_id])
     
+
+    subject_id = Column(Integer, ForeignKey("users.id"))
+    subject =relationship("User", foreign_keys=[subject_id])
+    
+
+
+class DoctorSerial(Base):
+    __tablename__ = "DoctorSerial"
+    id =Column(Integer, primary_key=True,index=True)
+
+    type = Column(String, nullable=False)
+
+    price = Column(Integer, nullable=False)
+
+    date = Column(Date, nullable=False)
+
+    appointmentDate = Column(Date, nullable=False)
+
+    time = Column(Double, nullable=False)
+
+    reviewchecked = Column(Integer, nullable=False)
+
+    checked = Column(Integer, nullable=False)
+
+    prescription = Column(String, nullable=False)
+
+    user = relationship("User")
+    user_id = Column(Integer, ForeignKey("users.id"))
+
+    doctor = relationship("Doctor")
+    doctor_id = Column(Integer, ForeignKey("doctors.id"))
