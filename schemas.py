@@ -100,6 +100,5 @@ class addDoctorSerial(BaseModel):
     type: str
     price: int
     appointmentDate: date
-    prescription: str
     time: float
     doctor_id: int
