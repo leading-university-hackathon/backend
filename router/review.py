@@ -48,13 +48,15 @@ def getReview(id:int, db:Session=Depends(database.get_db), current_user: models.
 @router.get("/pending")
 def getPendingReview(db:Session=Depends(database.get_db), current_user: models.User = Depends(oauth2.getCurrentUser)):
 
-    if current_user.role!="USER" and current_user.role!="DOCTOR":
+    if current_user.role!="USER":
         raise HTTPException(status_code=404, detail="error")
 
-    reviews = db.query(models.Review).filter(models.Review.subject_id == current_user.id).filter(models.Review.reviewchecked == -1).all()
+    doctorserials = db.query(models.DoctorSerial).filter(models.DoctorSerial.user_id == current_user.id).filter(models.DoctorSerial.reviewchecked == 0).all()
     reviewsout = []
-    for i  in reviews:
-        reviewout=schemas.ReviewOut(id=i.id,review=i.review,starCount=i.starCount,reviewerId=i.reviewer_id,subjectId=i.subject_id, reviewerName=i.reviewer.name)
+    for i in doctorserials:
+        reviewout=schemas.ReviewPending(orderId=i.id,subjectId=i.doctor_id,subjectName=i.doctor.user.name)
         reviewsout.append(reviewout)
     
     return reviewsout
+
+

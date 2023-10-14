@@ -166,11 +166,9 @@ class ReviewOut(BaseModel):
         orm_mode = True
 
 class ReviewPending(BaseModel):
-    id:int
+    orderId:int
     subjectId:int
     subjectName:int
-
-
 
     class Config():
         orm_mode = True
