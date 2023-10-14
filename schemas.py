@@ -130,6 +130,7 @@ class DoctorSerialOut(BaseModel):
     type:str
     user_id:int
     doctor_id:int
+    doctorName:str
     time:float
     appointmentDate:date
     class Config():
@@ -146,3 +147,8 @@ class CompletedPrescription(BaseModel):
 
     class Config():
         orm_mode = True
+
+class ReviewIn(BaseModel):
+    
+    reviewer_id:int
+    subject_id:int

@@ -61,17 +61,16 @@ class Doctor(Base):
     availableOfflineTimes = relationship("availableOfflineTime",back_populates="doctor")
     availableOnlineTimes = relationship("availableOnlineTime",back_populates="doctor")
     
-#Hospital class
+# #Hospital class
+# class Hospital(Base):
+#     __tablename__ = 'hospitals'
 
-class Hospital(Base):
-    __tablename__ = 'hospitals'
-
-    id = Column(Integer, primary_key=True,index=True)
-    bio= Column(String, nullable=True)
-    hospitalName = Column(String, nullable=False)
-    place = Column(String, nullable=False)
-    user = relationship("User")
-    user_id = Column(Integer, ForeignKey('users.id'))
+#     id = Column(Integer, primary_key=True,index=True)
+#     bio= Column(String, nullable=True)
+#     hospitalName = Column(String, nullable=False)
+#     place = Column(String, nullable=False)
+#     user = relationship("User")
+#     user_id = Column(Integer, ForeignKey('users.id'))
 
     
 #Review class

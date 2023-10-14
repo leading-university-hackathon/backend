@@ -78,14 +78,20 @@ def showUpcomingDoctorSerial(db:Session=Depends(database.get_db), current_user: 
     if current_user.role!="USER" and current_user.role!="DOCTOR":
         raise HTTPException(status_code=404, detail="error")
 
+    seriasOut =[]
     time = utils.convert_time_to_double(datetime.combine(datetime.today(), datetime.now().time()) - timedelta(minutes=30))
     if current_user.role=="USER":
         serials = doctor_serialrepo.findUpcomingSerialforUser(current_user.id, datetime.now().date(), time,db)
-        return serials
+        for i in serials:
+            serialOut = schemas.DoctorSerialOut(id=i.id, price=i.price, type=i.type, user_id=i.user_id, doctor_id=i.doctor_id, doctorName=i.doctor.name, time=i.time, appointmentDate=i.appointmentDate)
+            seriasOut.append(serialOut)
     
     elif current_user.role=="DOCTOR":
         serials = doctor_serialrepo.findUpcomingSerialforDoctor(current_user.id, datetime.now().date(),time,db)
-        return serials
+        for i in serials:
+            serialOut = schemas.DoctorSerialOut(id=i.id, price=i.price, type=i.type, user_id=i.user_id, doctor_id=i.doctor_id, doctorName=i.doctor.name, time=i.time, appointmentDate=i.appointmentDate)
+            seriasOut.append(serialOut)
+    return seriasOut
     
 @router.put("/check/{id}",status_code=202)
 def checkDoctorSerial(id:int, db:Session=Depends(database.get_db), current_user: models.User = Depends(oauth2.getCurrentUser)):
