@@ -1,8 +1,13 @@
 from datetime import date, timedelta,datetime
 from enum import Enum
-import models,const
+import models,const,database
 from passlib.context import CryptContext
 pwdContext = CryptContext(schemes=["bcrypt"], deprecated ="auto")
+import logging,httpx
+from sqlalchemy.orm import Session
+from fastapi import Depends
+
+logging.basicConfig(level=logging.INFO)
 
 def hash(password:str):
     return pwdContext.hash(password)
@@ -115,3 +120,73 @@ def setSerialTime(doctor: models.Doctor):
                 i.available_time = -1.0
             else:
                 i.available_time = available_time
+
+
+def convert_int_to_day(days):
+    day_map = {
+        "0": "Sunday",
+        "1": "Monday",
+        "2": "Tuesday",
+        "3": "Wednesday",
+        "4": "Thursday",
+        "5": "Friday",
+        "6": "Saturday"
+    }
+
+    part = days.split(",")
+    day_list = [day_map[i] for i in part if i in day_map]
+
+    return day_list
+
+
+def convert_string_to_local_time(time_string):
+    time_format = "%H:%M" 
+    
+    try:
+        local_time = datetime.strptime(time_string, time_format).time()
+        return local_time
+    except ValueError:
+        return None
+
+MESSAGE_API = "http://bulksmsbd.net/api/smsapi?api_key={password}&type=text&number={number}&senderid={user}&message={message}"
+
+async def send_message(medicine: str, time: str, contact_no: str):
+    message = f"You have to take {medicine} at {time}. Kindly take it"
+    url = MESSAGE_API.format(
+        user="8809617613117",  
+        password="huCqtTC4s44wPSkNKI0b",  
+        number=contact_no,
+        message=message
+    )
+
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url)
+
+        if 200 <= response.status_code < 300:
+            logging.info("Message sent successfully")
+        else:
+            logging.info("Error: Message not sent")
+
+def sendSingleMedicineReminder(medicineReminder:models.MedicineReminder):
+    time = convert_string_to_local_time(medicineReminder.time)
+    days = convert_int_to_day(medicineReminder.days)
+    current_time = datetime.now().time()
+
+    for day in days:
+        current_day = datetime.now().strftime("%A")
+        if day.upper()==current_day.upper() and time == current_time:
+            try:
+                send_message(medicineReminder.description, medicineReminder.time, medicineReminder.user.phone)
+            except:
+
+                logging.info("Error sending message")
+
+
+
+def sendMedincineReminders():
+    db = database.SessionLocal()
+    medicineReminders = db.query(models.MedicineReminder).all()
+    for medicineReminder in medicineReminders:
+        sendSingleMedicineReminder(medicineReminder)
+
+    

@@ -3,11 +3,22 @@ from fastapi import Depends, FastAPI, status,Response, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 
-import models
+import models,utils
 from database import engine, SessionLocal
 from router import auth, doctor, doctor_serial, review
 
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.interval import IntervalTrigger
+import atexit,logging
+logging.basicConfig(level=logging.INFO)
+
 app = FastAPI()
+
+scheduler = BackgroundScheduler()
+scheduler.start()
+atexit.register(lambda: scheduler.shutdown())
+
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -18,9 +29,14 @@ app.add_middleware(
 )
 
 
-# models.Base.metadata.drop_all(bind=engine)
-
 models.Base.metadata.create_all(bind=engine)
+
+@app.on_event("startup")
+def start_scheduler():
+    logging.info("Starting Scheduler")
+    trigger = IntervalTrigger(minutes=1)  # Run every 1 minute
+    scheduler.add_job(utils.sendMedincineReminders, trigger=trigger)
+    logging.info("Finishing Scheduler")
 
 
 app.include_router(auth.router)
