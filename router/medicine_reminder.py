@@ -23,6 +23,16 @@ def add_medicine_reminder(reminderIn:schemas.MedicineReminderIn, db:Session=Depe
 
     return {"details":"success"}
 
+@router.get("/get",status_code=200,response_model=list[schemas.MedicineReminderOut])
+def get_medicine_reminders(db:Session=Depends(database.get_db), current_user: models.User = Depends(oauth2.getCurrentUser)):
+
+    if current_user.role!="USER":
+        raise HTTPException(status_code=404, detail="error")
+
+    reminders = db.query(models.MedicineReminder).filter(models.MedicineReminder.user_id == current_user.id).all()
+
+    return reminders
+
 @router.delete("/delete/{id}",status_code=202)
 def delete_reminder(id:int, db:Session=Depends(database.get_db), current_user: models.User = Depends(oauth2.getCurrentUser)):
 

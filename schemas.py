@@ -177,3 +177,12 @@ class MedicineReminderIn(BaseModel):
     description:str
     time:str
     days:str
+
+class MedicineReminderOut(BaseModel):
+    id:int
+    description:str
+    time:str
+    days:str
+
+    class Config():
+        orm_mode = True
