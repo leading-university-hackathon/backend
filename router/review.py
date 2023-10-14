@@ -19,7 +19,7 @@ def addReview(review:str,star:int, reviewin:schemas.ReviewIn, db:Session=Depends
     if current_user.role!="USER":
         raise HTTPException(status_code=404, detail="error")
 
-    review = models.Review(review=review,starCount=star,reviewer_id=current_user.id,subject_id=reviewin.subject_id)
+    review = models.Review(review=review,starCount=star,reviewer_id=current_user.id,subject_id=reviewin.subjectId)
 
     doctor_serial = db.query(models.DoctorSerial).filter(models.DoctorSerial.id == reviewin.orderId).first()
 
