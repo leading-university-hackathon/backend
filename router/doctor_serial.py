@@ -122,3 +122,18 @@ def getAllPrescriptions(db:Session=Depends(database.get_db), current_user: model
         prescriptions.append(prescription)
 
     return prescriptions
+
+@router.delete("/delete/{id}",status_code=status.HTTP_200_OK)
+def deleteSerial(id:int, db:Session=Depends(database.get_db), current_user: models.User = Depends(oauth2.getCurrentUser)):
+
+    if current_user.role!="DOCTOR":
+        raise HTTPException(status_code=404, detail="error")
+    
+    serial = db.query(models.DoctorSerial).filter(models.DoctorSerial.id == id).first()
+    if serial.doctor_id!= current_user.id:
+        raise HTTPException(status_code=404, detail="error")
+    
+    db.delete(serial)
+    db.commit()
+
+    return {"details":"deleted"}
