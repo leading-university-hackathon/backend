@@ -1,5 +1,5 @@
-import models, schemas, utils, oauth2, database
-from fastapi import Depends, FastAPI, status,Response, HTTPException, APIRouter
+import models, schemas, oauth2, database
+from fastapi import Depends,HTTPException, APIRouter
 from sqlalchemy.orm import Session
 
 router = APIRouter(
@@ -13,7 +13,7 @@ def add_diagnosis(addDiagnosis:schemas.addDiagnosis, db:Session=Depends(database
     if current_user.role!="HOSPITAL":
         raise HTTPException(status_code=404, detail="error")
     
-    hospital = db.query(models.HOSPITAL).join(models.User).filter(models.User.id==current_user.id).first()
+    hospital = db.query(models.Hospital).join(models.User).filter(models.User.id==current_user.id).first()
 
     diagnosis = models.Diagnosis(**addDiagnosis.model_dump(), hospital_id=hospital.id)
 

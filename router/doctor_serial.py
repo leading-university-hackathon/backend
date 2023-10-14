@@ -1,10 +1,7 @@
-from datetime import date,datetime, timedelta
-from random import randrange
+from datetime import datetime, timedelta
 from typing import List
-from fastapi.security.oauth2 import OAuth2PasswordRequestForm
-
 import models, schemas, utils, oauth2, database,const
-from fastapi import Depends, FastAPI, status,Response, HTTPException, APIRouter
+from fastapi import Depends,  status, HTTPException, APIRouter
 from sqlalchemy.orm import Session
 
 from repo import doctor_serialrepo
