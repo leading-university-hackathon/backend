@@ -83,13 +83,13 @@ def showUpcomingDoctorSerial(db:Session=Depends(database.get_db), current_user: 
     if current_user.role=="USER":
         serials = doctor_serialrepo.findUpcomingSerialforUser(current_user.id, datetime.now().date(), time,db)
         for i in serials:
-            serialOut = schemas.DoctorSerialOut(id=i.id, price=i.price, type=i.type, user_id=i.user_id, doctor_id=i.doctor_id, doctorName=i.doctor.name, time=i.time, appointmentDate=i.appointmentDate)
+            serialOut = schemas.DoctorSerialOut(id=i.id, price=i.price, type=i.type, user_id=i.user_id, doctor_id=i.doctor_id,patientName=i.user.name, doctorName=i.doctor.name, time=i.time, appointmentDate=i.appointmentDate)
             seriasOut.append(serialOut)
     
     elif current_user.role=="DOCTOR":
         serials = doctor_serialrepo.findUpcomingSerialforDoctor(current_user.id, datetime.now().date(),time,db)
         for i in serials:
-            serialOut = schemas.DoctorSerialOut(id=i.id, price=i.price, type=i.type, user_id=i.user_id, doctor_id=i.doctor_id, doctorName=i.doctor.name, time=i.time, appointmentDate=i.appointmentDate)
+            serialOut = schemas.DoctorSerialOut(id=i.id, price=i.price, type=i.type, user_id=i.user_id, doctor_id=i.doctor_id,patientName=i.user.name, doctorName=i.doctor.name, time=i.time, appointmentDate=i.appointmentDate)
             seriasOut.append(serialOut)
     return seriasOut
     

@@ -131,6 +131,7 @@ class DoctorSerialOut(BaseModel):
     user_id:int
     doctor_id:int
     doctorName:str
+    patientName:str
     time:float
     appointmentDate:date
     class Config():
@@ -159,6 +160,16 @@ class ReviewOut(BaseModel):
     reviewerName:str
     review:str
     starCount:int
+
+
+    class Config():
+        orm_mode = True
+
+class ReviewPending(BaseModel):
+    id:int
+    subjectId:int
+    subjectName:int
+
 
 
     class Config():
