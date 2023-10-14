@@ -65,6 +65,7 @@ class Doctor(Base):
 
 #Hospital Class
 class Hospital(Base):
+    __tablename__ = 'hospitals'
     id = Column(Integer, primary_key=True,index=True)
     user = relationship("User")
     user_id = Column(Integer, ForeignKey('users.id'))
