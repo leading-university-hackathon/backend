@@ -48,6 +48,7 @@ class Doctor(Base):
     __tablename__ = 'doctors'
 
     id = Column(Integer, primary_key=True,index=True)
+    bmdc = Column(String, nullable=True)
     bio= Column(String, nullable=True)
     balance = Column(Integer, nullable=True)
     rating = Column(Double,nullable=True,default=0.0)
@@ -61,6 +62,16 @@ class Doctor(Base):
     user_id = Column(Integer, ForeignKey('users.id'))
     availableOfflineTimes = relationship("availableOfflineTime",back_populates="doctor")
     availableOnlineTimes = relationship("availableOnlineTime",back_populates="doctor")
+
+#Hospital Class
+class Hospital(Base):
+    id = Column(Integer, primary_key=True,index=True)
+    user = relationship("User")
+    user_id = Column(Integer, ForeignKey('users.id'))
+    bio= Column(String, nullable=True)
+    hospitalName= Column(String, nullable=True)
+    place= Column(String, nullable=True)
+
 
 #DoctorSerial class    
 class DoctorSerial(Base):

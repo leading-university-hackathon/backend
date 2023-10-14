@@ -89,6 +89,7 @@ class availableOfflineTimeOut(BaseModel):
 class DoctorSignUp(BaseModel):
     user:UserSignup
     bio:str
+    bmdc:str
     expertise:str
     current_hospital:str
     place:str
@@ -104,6 +105,7 @@ class DoctorSignUp(BaseModel):
 class DoctorOut(BaseModel):
     user:UserOut
     bio:str
+    bmdc:str
     expertise:str
     current_hospital:str
     place:str
