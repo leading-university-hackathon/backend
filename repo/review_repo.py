@@ -5,9 +5,8 @@ from sqlalchemy import func
 
 def findAvgRating(doctorId,db:Session=Depends(database.get_db)):
 
-    average_star_count = db.query(func.avg(models.Review.starCount).label("average_star_count")) \
-    .filter(models.Review.subject_id == doctorId) \
-    .scalar()
+    average_star_count = db.query(func.avg(models.Review.starCount)).label('average') \
+    .filter(models.Review.subject_id == doctorId)
 
     return average_star_count
 
