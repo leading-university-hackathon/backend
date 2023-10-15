@@ -33,7 +33,7 @@ def getAllDiagnosis(db:Session=Depends(database.get_db), current_user: models.Us
     diagnosisAllOut = []
 
     for i in diagnosisAll:
-        diagnosisOut = schemas.DiagnosisOut( name=i.name, description=i.description,price=i.price,hospitalName=i.hospital.hospitalName,rating =4)
+        diagnosisOut = schemas.DiagnosisOut( name=i.name, description=i.description,price=i.price,hospitalName=i.hospital.hospitalName,rating =4.0)
         diagnosisAllOut.append(diagnosisOut)
 
     return diagnosisAllOut

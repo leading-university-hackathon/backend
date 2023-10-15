@@ -208,6 +208,6 @@ class addDiagnosis(BaseModel):
 class DiagnosisOut(BaseModel):
     name:str
     description:str
-    price:str
+    price:int
     hospitalName:str
-    rating:int
+    rating:float
