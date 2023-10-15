@@ -155,24 +155,6 @@ async def send_message(medicine: str, time: str, contact_no: str):
         else:
             logging.info("Error: Message not sent")
 
-
-async def send_message(medicine: str, time: str, contact_no: str):
-    message = f"You have to take {medicine} at {time}. Kindly take it"
-    url = MESSAGE_API.format(
-        user="8809617613117",  
-        password="huCqtTC4s44wPSkNKI0b",  
-        number=contact_no,
-        message=message
-    )
-
-    async with httpx.AsyncClient() as client:
-        response = await client.get(url)
-
-        if 200 <= response.status_code < 300:
-            logging.info("Message sent successfully")
-        else:
-            logging.info("Error: Message not sent")
-
 async def sendSingleMedicineReminder(medicineReminder:models.MedicineReminder):
     time = convert_string_to_local_time(medicineReminder.time).strftime("%H:%M")
   

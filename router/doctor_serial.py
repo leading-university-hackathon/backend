@@ -126,10 +126,18 @@ def deleteSerial(id:int, db:Session=Depends(database.get_db), current_user: mode
     if current_user.role!="DOCTOR":
         raise HTTPException(status_code=404, detail="error")
     
+    doctor = db.query(models.Doctor).join(models.User).filter(models.User.id == current_user.id).first()
+
+    
     serial = db.query(models.DoctorSerial).filter(models.DoctorSerial.id == id).first()
     if serial.doctor_id!= current_user.id:
         raise HTTPException(status_code=404, detail="error")
     
+    doctor.balance-=serial.price
+
+    db.save(doctor)
+    db.commit()
+
     db.delete(serial)
     db.commit()
 
