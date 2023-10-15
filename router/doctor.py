@@ -37,7 +37,7 @@ def get_doctors(db: Session = Depends(database.get_db), current_user: models.Use
                 online_time.available_time = online_time.start_time
 
         utils.setSerialTime(doctor)
-        doctor.rating = review_repo.findAvgRating(doctor.id,db)
+        doctor.rating = review_repo.findAvgRating(doctor.user.id,db)
         if not doctor.rating:
          doctor.rating = 0.0
 
@@ -72,7 +72,7 @@ def get_doctor(id:int, db:Session = Depends(database.get_db),current_user: model
     
     utils.setSerialTime(doctor)
     
-    doctor.rating = review_repo.findAvgRating(doctor.id,db)
+    doctor.rating = review_repo.findAvgRating(doctor.user.id,db)
 
     if not doctor.rating:
         doctor.rating = 0.0
