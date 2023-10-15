@@ -114,7 +114,6 @@ class HospitalSignUp(BaseModel):
 class DoctorOut(BaseModel):
     user:UserOut
     bio:str
-    bmdc:int
     expertise:str
     current_hospital:str
     place:str
