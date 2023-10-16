@@ -133,7 +133,7 @@ def deleteSerial(id:int, db:Session=Depends(database.get_db), current_user: mode
     if serial.doctor_id!= current_user.id:
         raise HTTPException(status_code=404, detail="error")
     
-    doctor.balance-=serial.price
+    doctor.balance-=serial.price+const.perUserCost
 
     db.save(doctor)
     db.commit()

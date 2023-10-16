@@ -34,10 +34,9 @@ models.Base.metadata.create_all(bind=engine)
 
 @app.on_event("startup")
 def start_scheduler():
-    logging.info("Starting Scheduler")
+
     trigger = IntervalTrigger(minutes=1)  # Run every 1 minute
     scheduler.add_job(utils.sendMedincineReminders, trigger=trigger)
-    logging.info("Finishing Scheduler")
 
 
 app.include_router(auth.router)
